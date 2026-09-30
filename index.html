@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پوست‌یار | اسکن هوشمند پوست</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, Vazirmatn, sans-serif; }
+body { background: linear-gradient(135deg, #f5e6f0 0%, #e8f0f5 100%); min-height: 100vh; padding: 16px; color: #2d2d2d; }
+header { text-align: center; padding: 20px 0; }
+header h1 { font-size: 28px; color: #6b2e6b; margin-bottom: 6px; }
+.subtitle { color: #777; font-size: 14px; }
+main { max-width: 480px; margin: 0 auto; }
+.card { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(107,46,107,0.08); }
+.card h2 { font-size: 18px; color: #6b2e6b; margin-bottom: 16px; border-bottom: 2px solid #f0e0f0; padding-bottom: 8px; }
+.card h3 { font-size: 16px; color: #6b2e6b; margin: 20px 0 12px; }
+label { display: block; margin-bottom: 14px; font-size: 14px; color: #444; }
+input, select { width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fafafa; }
+button { width: 100%; padding: 12px; background: linear-gradient(135deg, #9b4d9b, #6b2e6b); color: #fff; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; margin-top: 8px; transition: transform 0.15s; }
+button:active { transform: scale(0.98); }
+button.secondary { background: #e8e0e8; color: #6b2e6b; }
+.hidden { display: none; }
+.hint { font-size: 13px; color: #888; margin-bottom: 12px; line-height: 1.7; }
+.video-wrapper { position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #000; aspect-ratio: 3/4; }
+#video { width: 100%; height: 100%; object-fit: cover; }
+.buttons { margin-top: 12px; }
+.issue-item { background: #faf0fa; border-right: 4px solid #9b4d9b; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
+.issue-item h4 { font-size: 15px; color: #6b2e6b; margin-bottom: 4px; }
+.issue-item p { font-size: 13px; color: #666; }
+.severity { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-left: 6px; color: #fff; }
+.severity.low { background: #7cb342; }
+.severity.medium { background: #f9a825; }
+.severity.high { background: #e53935; }
+.product-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8f8fa; border-radius: 10px; margin-bottom: 8px; }
+.product-item .brand { font-size: 11px; color: #9b4d9b; font-weight: bold; background: #f0e0f0; padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+.product-item .name { font-size: 13px; color: #333; flex: 1; }
+.loading { text-align: center; padding: 20px; color: #6b2e6b; }
+footer { text-align: center; padding: 24px 0 12px; font-size: 13px; color: #999; }
+footer strong { color: #6b2e6b; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 پوست‌یار</h1>
+  <p class="subtitle">اسکن هوشمند پوست و پیشنهاد محصول</p>
+</header>
+
+<main>
+  <section id="form-section" class="card">
+    <h2>۱. اطلاعات مشتری</h2>
+    <label>سن:
+      <input type="number" id="age" min="10" max="90" placeholder="مثلاً ۳۰">
+    </label>
+    <label>نوع پوست (اگر می‌دانید):
+      <select id="skin-type">
+        <option value="unknown">نمی‌دانم</option>
+        <option value="dry">خشک</option>
+        <option value="oily">چرب</option>
+        <option value="normal">معمولی</option>
+        <option value="sensitive">حساس</option>
+      </select>
+    </label>
+    <label>حساسیت پوستی دارید؟
+      <select id="sensitivity">
+        <option value="no">خیر</option>
+        <option value="yes">بله</option>
+      </select>
+    </label>
+    <button id="next-to-camera">ادامه به اسکن</button>
+  </section>
+
+  <section id="camera-section" class="card hidden">
+    <h2>۲. اسکن صورت</h2>
+    <p class="hint">صورت خود را در نور مناسب و بدون آرایش مقابل دوربین قرار دهید.</p>
+    <div class="video-wrapper">
+      <video id="video" autoplay playsinline muted></video>
+    </div>
+    <div class="buttons">
+      <button id="capture">📸 گرفتن عکس و تحلیل</button>
+      <button id="retake" class="secondary hidden">🔄 اسکن مجدد</button>
+    </div>
+  </section>
+
+  <section id="result-section" class="card hidden">
+    <h2>۳. نتیجه تحلیل</h2>
+    <div id="issues-list"></div>
+    <h3>پیشنهاد محصولات</h3>
+    <div id="products-list"></div>
+    <button id="restart" class="secondary">شروع دوباره</button>
+  </section>
+</main>
+
+<footer>
+  <p>طراح: <strong>محمد سیستانی</strong></p>
+</footer>
+
+<script>
+// ==================== کاتالوگ محصولات ====================
+const productsData = {
+  acne: {
+    title: "آکنه و جوش",
+    products: [
+      { brand: "MND", name: "ژل ضدآکنه (مناسب پوست چرب)" },
+      { brand: "MND", name: "کرم ضدآکنه (مناسب پوست خشک و معمولی)" },
+      { brand: "MND", name: "فوم شستشوی صورت پوست چرب" },
+      { brand: "MND", name: "ژل شستشوی صورت پوست چرب" },
+      { brand: "MND", name: "ماسک صورت حاوی پودر زغال" },
+      { brand: "Blackberry", name: "سرم کنترل چربی (نیاسینامید ۱۰٪ + زینک)" }
+    ]
+  },
+  spots: {
+    title: "لک و تیرگی",
+    products: [
+      { brand: "Blackberry", name: "سرم روشن‌کننده (آلفا آربوتین ۲٪)" },
+      { brand: "MND", name: "کرم ضدلک" },
+      { brand: "MND", name: "ماسک روشن‌کننده حاوی خاک‌رس" },
+      { brand: "MND", name: "کرم روشن‌کننده بدن" },
+      { brand: "MND", name: "کرم روشن‌کننده زیر بغل و کشاله ران" },
+      { brand: "MND", name: "اسکراب روشن‌کننده صورت" }
+    ]
+  },
+  wrinkles: {
+    title: "چین و چروک",
+    products: [
+      { brand: "Blackberry", name: "سرم ضدچروک (حاوی ذرات طلا ۲۴ عیار)" },
+      { brand: "Blackberry", name: "سرم ضدچروک (ویتامین C ۱۲٪)" },
+      { brand: "Blackberry", name: "کرم ضدچروک صورت" },
+      { brand: "Blackberry", name: "کرم مناسب دور چشم" },
+      { brand: "Blackberry", name: "کرم فوق آبرسان و جوانساز طلا ۲۴ عیار" },
+      { brand: "MND", name: "کرم سفت‌کننده روز (SPF 15)" },
+      { brand: "MND", name: "کرم سفت‌کننده شب" }
+    ]
+  },
+  oily: {
+    title: "چربی و منافذ باز",
+    products: [
+      { brand: "Blackberry", name: "سرم کنترل چربی (نیاسینامید ۱۰٪ + زینک)" },
+      { brand: "MND", name: "ژل شستشوی صورت پوست چرب" },
+      { brand: "MND", name: "فوم شستشوی صورت پوست چرب" },
+      { brand: "MND", name: "تونر متعادل‌کننده سبوم" },
+      { brand: "MND", name: "محلول پاک‌کننده اتانولی (پوست چرب)" },
+      { brand: "MND", name: "ماسک کاهش‌دهنده سبوم" },
+      { brand: "MND", name: "کرم‌ژل آبرسان (پوست چرب)" }
+    ]
+  },
+  dry: {
+    title: "خشکی و کم‌آبی",
+    products: [
+      { brand: "Blackberry", name: "سرم آبرسان و ترمیم‌کننده (هیالورونیک اسید ۲٪)" },
+      { brand: "MND", name: "کرم آبرسان (پوست معمولی)" },
+      { brand: "MND", name: "تونر آبرسان" },
+      { brand: "MND", name: "بالم مرطوب‌کننده" },
+      { brand: "MND", name: "روغن نرم‌کننده پوست" },
+      { brand: "MND", name: "کرم نرم‌کننده حاوی ۵٪ اوره" }
+    ]
+  },
+  supplements: {
+    title: "مکمل‌های پیشنهادی",
+    products: [
+      { brand: "Ellen Beauty", name: "پودر کلاژن خوراکی" },
+      { brand: "Ellen Beauty", name: "کپسول کلاژن" },
+      { brand: "Ellen Beauty", name: "نوشیدنی فراسودمند انرژی‌زا (پپتوییت)" }
+    ]
+  }
+};
+
+// ==================== ناوبری ====================
+let stream = null;
+const formSection = document.getElementById('form-section');
+const cameraSection = document.getElementById('camera-section');
+const resultSection = document.getElementById('result-section');
+
+document.getElementById('next-to-camera').onclick = () => {
+  formSection.classList.add('hidden');
+  cameraSection.classList.remove('hidden');
+  startCamera();
+};
+
+document.getElementById('restart').onclick = () => {
+  resultSection.classList.add('hidden');
+  formSection.classList.remove('hidden');
+  document.getElementById('retake').classList.add('hidden');
+  document.getElementById('capture').classList.remove('hidden');
+};
+
+document.getElementById('retake').onclick = () => {
+  resultSection.classList.add('hidden');
+  cameraSection.classList.remove('hidden');
+  document.getElementById('retake').classList.add('hidden');
+  document.getElementById('capture').classList.remove('hidden');
+  startCamera();
+};
+
+// ==================== دوربین ====================
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 960 } }
+    });
+    document.getElementById('video').srcObject = stream;
+  } catch (e) {
+    alert('دسترسی به دوربین ممکن نشد. لطفاً اجازه دسترسی بدهید.');
+    console.error(e);
+  }
+}
+
+// ==================== تحلیل تصویر ====================
+document.getElementById('capture').onclick = async () => {
+  const video = document.getElementById('video');
+  if (!video.videoWidth) {
+    alert('دوربین آماده نیست. کمی صبر کنید.');
+    return;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+
+  if (stream) stream.getTracks().forEach(t => t.stop());
+
+  const issues = analyzeImage(canvas);
+  showResults(issues);
+
+  cameraSection.classList.add('hidden');
+  resultSection.classList.remove('hidden');
+  document.getElementById('retake').classList.remove('hidden');
+  document.getElementById('capture').classList.add('hidden');
+};
+
+function analyzeImage(canvas) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const img = ctx.getImageData(0, 0, w, h);
+  const d = img.data;
+
+  const x0 = Math.floor(w * 0.2), x1 = Math.floor(w * 0.8);
+  const y0 = Math.floor(h * 0.15), y1 = Math.floor(h * 0.85);
+
+  let count = 0, redPx = 0, shinePx = 0, darkPx = 0, edgePx = 0;
+  let sumR = 0, sumG = 0, sumB = 0;
+  let prevLum = -1;
+
+  for (let y = y0; y < y1; y += 4) {
+    for (let x = x0; x < x1; x += 4) {
+      const i = (y * w + x) * 4;
+      const r = d[i], g = d[i + 1], b = d[i + 2];
+      sumR += r; sumG += g; sumB += b;
+      count++;
+
+      if (r > 140 && (r - g) > 35 && (r - b) > 25) redPx++;
+
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      if (lum > 200) shinePx++;
+      if (lum < 90) darkPx++;
+      if (prevLum >= 0 && Math.abs(lum - prevLum) > 30) edgePx++;
+      prevLum = lum;
+    }
+  }
+
+  const avgR = sumR / count, avgG = sumG / count, avgB = sumB / count;
+
+  const stats = {
+    redness: redPx / count,
+    shine: shinePx / count,
+    darkness: darkPx / count,
+    dryness: avgR < 120 ? 0.25 : 0.08,
+    texture: edgePx / count,
+    avg: { r: avgR, g: avgG, b: avgB }
+  };
+
+  console.log('آماره‌ها:', stats);
+
+  const issues = [];
+
+  if (stats.redness > 0.15) {
+    issues.push({
+      key: 'acne',
+      title: 'احتمال آکنه و التهاب',
+      severity: stats.redness > 0.25 ? 'high' : 'medium',
+      desc: 'قرمزی و التهاب در نواحی صورت مشاهده شد.'
+    });
+  }
+
+  if (stats.darkness > 0.20) {
+    issues.push({
+      key: 'spots',
+      title: 'احتمال لک و تیرگی',
+      severity: stats.darkness > 0.30 ? 'high' : 'medium',
+      desc: 'تیرگی و ناهمگونی رنگ پوست مشاهده شد.'
+    });
+  }
+
+  if (stats.shine > 0.22) {
+    issues.push({
+      key: 'oily',
+      title: 'احتمال پوست چرب و منافذ باز',
+      severity: stats.shine > 0.32 ? 'high' : 'medium',
+      desc: 'براقیت زیاد و ترشح چربی در سطح پوست مشاهده شد.'
+    });
+  }
+
+  if (stats.dryness > 0.18) {
+    issues.push({
+      key: 'dry',
+      title: 'احتمال خشکی و کم‌آبی',
+      severity: stats.dryness > 0.28 ? 'high' : 'medium',
+      desc: 'خشکی و کاهش رطوبت پوست مشاهده شد.'
+    });
+  }
+
+  if (stats.texture > 0.25) {
+    issues.push({
+      key: 'wrinkles',
+      title: 'احتمال چین و چروک',
+      severity: stats.texture > 0.35 ? 'high' : 'medium',
+      desc: 'خطوط و ناهمواری در سطح پوست مشاهده شد.'
+    });
+  }
+
+  if (issues.length === 0) {
+    issues.push({
+      key: 'dry',
+      title: 'پوست سالم و متعادل',
+      severity: 'low',
+      desc: 'مشکل خاصی مشاهده نشد. مراقبت روزانه توصیه می‌شود.'
+    });
+  }
+
+  return issues;
+}
+
+// ==================== نمایش نتیجه ====================
+function showResults(issues) {
+  const issuesList = document.getElementById('issues-list');
+  const productsList = document.getElementById('products-list');
+  issuesList.innerHTML = '';
+  productsList.innerHTML = '';
+
+  const sevMap = { low: 'کم', medium: 'متوسط', high: 'زیاد' };
+
+  issues.forEach(issue => {
+    const div = document.createElement('div');
+    div.className = 'issue-item';
+    div.innerHTML = `
+      <h4><span class="severity ${issue.severity}">${sevMap[issue.severity]}</span> ${issue.title}</h4>
+      <p>${issue.desc}</p>
+    `;
+    issuesList.appendChild(div);
+  });
+
+  const productSet = new Map();
+  issues.forEach(issue => {
+    if (productsData[issue.key]) {
+      productsData[issue.key].products.forEach(p => {
+        productSet.set(p.brand + '|' + p.name, p);
+      });
+    }
+  });
+
+  const age = parseInt(document.getElementById('age').value) || 30;
+  if (age > 35) {
+    productsData.supplements.products.forEach(p => {
+      productSet.set(p.brand + '|' + p.name, p);
+    });
+  }
+
+  productSet.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'product-item';
+    div.innerHTML = `<span class="brand">${p.brand}</span><span class="name">${p.name}</span>`;
+    productsList.appendChild(div);
+  });
+}
+</script>
+
+</body>
+</html>
