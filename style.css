@@ -1,10 +1,12 @@
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, Vazirmatn, sans-serif; }
 body { background: linear-gradient(135deg, #f5e6f0 0%, #e8f0f5 100%); min-height: 100vh; padding: 16px; color: #2d2d2d; }
 header { text-align: center; padding: 20px 0 10px; }
-header h1 { font-size: 28px; color: #6b2e6b; margin-bottom: 6px; }
-.subtitle { color: #777; font-size: 14px; }
-.tabs { display: flex; gap: 6px; max-width: 480px; margin: 0 auto 16px; background: #fff; padding: 6px; border-radius: 12px; box-shadow: 0 4px 16px rgba(107,46,107,0.08); }
-.tab { flex: 1; padding: 10px 6px; text-align: center; border-radius: 8px; font-size: 12px; cursor: pointer; color: #888; transition: all 0.2s; }
+.brand-header { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.brand-icon { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 4px 12px rgba(107,46,107,0.25); }
+.brand-header h1 { font-size: 26px; color: #6b2e6b; margin: 0 0 2px 0; text-align: right; }
+.brand-header .subtitle { color: #777; font-size: 12px; text-align: right; }
+.tabs { display: flex; gap: 4px; max-width: 480px; margin: 0 auto 16px; background: #fff; padding: 6px; border-radius: 12px; box-shadow: 0 4px 16px rgba(107,46,107,0.08); overflow-x: auto; }
+.tab { flex: 1; padding: 10px 4px; text-align: center; border-radius: 8px; font-size: 11px; cursor: pointer; color: #888; white-space: nowrap; }
 .tab.active { background: linear-gradient(135deg, #9b4d9b, #6b2e6b); color: #fff; font-weight: bold; }
 main { max-width: 480px; margin: 0 auto; }
 .card { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(107,46,107,0.08); }
@@ -17,6 +19,8 @@ button:active { transform: scale(0.98); }
 button.secondary { background: #e8e0e8; color: #6b2e6b; }
 button.whatsapp { background: #25D366; }
 button.excel { background: #1D6F42; }
+button.fb-correct { background: #7cb342; }
+button.fb-wrong { background: #e53935; }
 .hidden { display: none; }
 .hint { font-size: 13px; color: #888; margin-bottom: 12px; line-height: 1.7; }
 .video-wrapper { position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #000; aspect-ratio: 3/4; }
@@ -45,10 +49,24 @@ button.excel { background: #1D6F42; }
 .pack-desc { font-size: 12px; color: #888; margin-bottom: 8px; }
 .pack-item { font-size: 13px; color: #333; padding: 4px 0; border-bottom: 1px solid #f5f5f5; }
 .pack-item:last-child { border-bottom: none; }
+.feedback-box { margin-top: 24px; padding-top: 16px; border-top: 2px dashed #e0d0e0; }
+.feedback-buttons { display: flex; gap: 8px; margin-bottom: 12px; }
+.feedback-buttons button { flex: 1; margin-top: 0; }
+.correction-option { display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8f8fa; border-radius: 8px; margin-bottom: 6px; cursor: pointer; font-size: 14px; }
+.correction-option input { width: auto; margin: 0; }
+.correction-option.checked { background: #faf0fa; border: 1px solid #9b4d9b; }
 .history-item { background: #f8f8fa; border-radius: 10px; padding: 12px; margin-bottom: 10px; font-size: 13px; }
 .history-item .date { color: #999; font-size: 11px; }
 .history-item .name { color: #6b2e6b; font-weight: bold; margin: 4px 0; }
 .history-item .summary { color: #666; font-size: 12px; line-height: 1.6; }
 .empty-state { text-align: center; padding: 30px 20px; color: #999; font-size: 14px; }
+.dataset-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+.stat-box { background: #faf0fa; border-radius: 8px; padding: 10px; text-align: center; }
+.stat-box .num { font-size: 22px; font-weight: bold; color: #6b2e6b; }
+.stat-box .lbl { font-size: 11px; color: #888; }
+.dataset-item { display: flex; align-items: center; gap: 10px; padding: 8px; background: #f8f8fa; border-radius: 8px; margin-bottom: 6px; font-size: 12px; }
+.dataset-item img { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; }
+.dataset-item .info { flex: 1; }
+.dataset-item .tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #f0e0f0; color: #6b2e6b; }
 footer { text-align: center; padding: 24px 0 12px; font-size: 13px; color: #999; }
 footer strong { color: #6b2e6b; }
