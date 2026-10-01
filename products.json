@@ -1,0 +1,105 @@
+{
+  "issues": {
+    "acne": {
+      "title": "آکنه و جوش",
+      "products": [
+        { "brand": "MND", "name": "ژل ضدآکنه (مناسب پوست چرب)", "priority": 1 },
+        { "brand": "MND", "name": "کرم ضدآکنه (پوست خشک و معمولی)", "priority": 2 },
+        { "brand": "MND", "name": "فوم شستشوی صورت پوست چرب", "priority": 1 },
+        { "brand": "MND", "name": "ژل شستشوی صورت پوست چرب", "priority": 2 },
+        { "brand": "MND", "name": "ماسک صورت حاوی پودر زغال", "priority": 3 },
+        { "brand": "Blackberry", "name": "سرم کنترل چربی (نیاسینامید ۱۰٪ + زینک)", "priority": 1 }
+      ]
+    },
+    "spots": {
+      "title": "لک و تیرگی",
+      "products": [
+        { "brand": "Blackberry", "name": "سرم روشن‌کننده (آلفا آربوتین ۲٪)", "priority": 1 },
+        { "brand": "MND", "name": "کرم ضدلک", "priority": 1 },
+        { "brand": "MND", "name": "ماسک روشن‌کننده خاک‌رس", "priority": 2 },
+        { "brand": "MND", "name": "کرم روشن‌کننده بدن", "priority": 3 },
+        { "brand": "MND", "name": "کرم روشن‌کننده زیر بغل و کشاله ران", "priority": 3 },
+        { "brand": "MND", "name": "اسکراب روشن‌کننده صورت", "priority": 2 }
+      ]
+    },
+    "wrinkles": {
+      "title": "چین و چروک",
+      "products": [
+        { "brand": "Blackberry", "name": "سرم ضدچروک (طلا ۲۴ عیار)", "priority": 1 },
+        { "brand": "Blackberry", "name": "سرم ضدچروک (ویتامین C ۱۲٪)", "priority": 1 },
+        { "brand": "Blackberry", "name": "کرم ضدچروک صورت", "priority": 2 },
+        { "brand": "Blackberry", "name": "کرم دور چشم", "priority": 2 },
+        { "brand": "Blackberry", "name": "کرم آبرسان طلا ۲۴ عیار", "priority": 3 },
+        { "brand": "MND", "name": "کرم سفت‌کننده روز (SPF 15)", "priority": 2 },
+        { "brand": "MND", "name": "کرم سفت‌کننده شب", "priority": 2 }
+      ]
+    },
+    "oily": {
+      "title": "چربی و منافذ باز",
+      "products": [
+        { "brand": "Blackberry", "name": "سرم کنترل چربی (نیاسینامید ۱۰٪ + زینک)", "priority": 1 },
+        { "brand": "MND", "name": "ژل شستشوی صورت پوست چرب", "priority": 1 },
+        { "brand": "MND", "name": "فوم شستشوی صورت پوست چرب", "priority": 2 },
+        { "brand": "MND", "name": "تونر متعادل‌کننده سبوم", "priority": 2 },
+        { "brand": "MND", "name": "محلول پاک‌کننده اتانولی", "priority": 3 },
+        { "brand": "MND", "name": "ماسک کاهش‌دهنده سبوم", "priority": 2 },
+        { "brand": "MND", "name": "کرم‌ژل آبرسان پوست چرب", "priority": 1 }
+      ]
+    },
+    "dry": {
+      "title": "خشکی و کم‌آبی",
+      "products": [
+        { "brand": "Blackberry", "name": "سرم آبرسان (هیالورونیک اسید ۲٪)", "priority": 1 },
+        { "brand": "MND", "name": "کرم آبرسان پوست معمولی", "priority": 1 },
+        { "brand": "MND", "name": "تونر آبرسان", "priority": 2 },
+        { "brand": "MND", "name": "بالم مرطوب‌کننده", "priority": 3 },
+        { "brand": "MND", "name": "روغن نرم‌کننده پوست", "priority": 3 },
+        { "brand": "MND", "name": "کرم نرم‌کننده حاوی ۵٪ اوره", "priority": 2 }
+      ]
+    },
+    "hairLoss": {
+      "title": "ریزش مو",
+      "products": [
+        { "brand": "Blackberry", "name": "سرم تقویت‌کننده و ضدریزش مو", "priority": 1 },
+        { "brand": "MND", "name": "شامپو تقویت‌کننده مو", "priority": 1 },
+        { "brand": "MND", "name": "تونیک تقویت‌کننده مو", "priority": 1 },
+        { "brand": "MND", "name": "شامپو جینسینگ", "priority": 2 },
+        { "brand": "Blackberry", "name": "لوسیون تقویت‌کننده ابرو", "priority": 3 },
+        { "brand": "Blackberry", "name": "سرم تقویت مژه", "priority": 3 }
+      ]
+    },
+    "dandruff": {
+      "title": "شوره سر",
+      "products": [
+        { "brand": "MND", "name": "شامپو ضدشوره", "priority": 1 },
+        { "brand": "MND", "name": "تونیک ضدشوره", "priority": 2 },
+        { "brand": "MND", "name": "شامپو پوست سر چرب", "priority": 2 }
+      ]
+    }
+  },
+  "supplements": {
+    "title": "مکمل‌های پیشنهادی",
+    "products": [
+      { "brand": "Ellen Beauty", "name": "پودر کلاژن خوراکی", "priority": 1 },
+      { "brand": "Ellen Beauty", "name": "کپسول کلاژن", "priority": 2 },
+      { "brand": "Ellen Beauty", "name": "نوشیدنی انرژی‌زا (پپتوییت)", "priority": 3 }
+    ]
+  },
+  "packs": {
+    "pro": {
+      "title": "پک حرفه‌ای (کامل)",
+      "badge": "پیشنهاد ویژه",
+      "desc": "همه‌ی محصولات لازم برای درمان کامل و سریع‌تر. مناسب کسانی که نتیجه‌ی سریع می‌خواهند."
+    },
+    "standard": {
+      "title": "پک استاندارد",
+      "badge": "متعادل",
+      "desc": "محصولات اصلی و ضروری. ترکیب خوبی از اثربخشی و هزینه."
+    },
+    "basic": {
+      "title": "پک پایه (اقتصادی)",
+      "badge": "شروع",
+      "desc": "حداقل محصولات لازم برای شروع. مناسب تست و شروع تدریجی."
+    }
+  }
+}
