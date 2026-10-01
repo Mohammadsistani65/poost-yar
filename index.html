@@ -11,14 +11,20 @@
 <body>
 
 <header>
-  <h1>🌿 پوست‌یار</h1>
-  <p class="subtitle">اسکن هوشمند پوست و مو | طراح: محمد سیستانی</p>
+  <div class="brand-header">
+    <img src="icon-192.svg" alt="پوست‌یار" class="brand-icon">
+    <div>
+      <h1>پوست‌یار</h1>
+      <p class="subtitle">اسکن هوشمند پوست و مو | طراح: محمد سیستانی</p>
+    </div>
+  </div>
 </header>
 
 <div class="tabs">
   <div class="tab active" data-tab="scan">اسکن</div>
-  <div class="tab" data-tab="packs">پک‌های پیشنهادی</div>
-  <div class="tab" data-tab="history">سابقه مشتریان</div>
+  <div class="tab" data-tab="packs">پک‌ها</div>
+  <div class="tab" data-tab="history">سابقه</div>
+  <div class="tab" data-tab="dataset">دیتاست</div>
 </div>
 
 <main>
@@ -58,7 +64,7 @@
 
     <section id="camera-section" class="card hidden">
       <h2>۲. اسکن <span id="scan-area-label">صورت</span></h2>
-      <p class="hint" id="camera-hint">صورت خود را در نور مناسب و بدون آرایش مقابل دوربین قرار دهید.</p>
+      <p class="hint" id="camera-hint">صورت را در نور مناسب و بدون آرایش مقابل دوربین قرار دهید.</p>
       <div class="video-wrapper">
         <video id="video" autoplay playsinline muted></video>
       </div>
@@ -72,14 +78,34 @@
     <section id="result-section" class="card hidden">
       <h2>۳. نتیجه تحلیل</h2>
       <div id="issues-list"></div>
-      <h3>محصولات مورد نیاز (تک‌تک)</h3>
+      <h3>محصولات مورد نیاز</h3>
       <div id="products-list"></div>
       <h3>پک‌های پیشنهادی</h3>
-      <p class="hint">از حرفه‌ای (کامل) تا پایه (اقتصادی) — به ترتیب اولویت.</p>
+      <p class="hint">از حرفه‌ای (کامل) تا پایه (اقتصادی).</p>
       <div id="packs-list"></div>
+
+      <!-- سیستم بازخورد -->
+      <div class="feedback-box">
+        <h3>📝 بازخورد شما</h3>
+        <p class="hint">آیا تشخیص اپ درست بود؟ نظر شما به بهبود دقت کمک می‌کند.</p>
+        <div class="feedback-buttons">
+          <button id="fb-correct" class="fb-correct">✅ تشخیص درست بود</button>
+          <button id="fb-wrong" class="fb-wrong">❌ نیاز به اصلاح دارد</button>
+        </div>
+
+        <div id="fb-correction" class="hidden">
+          <p class="hint">عارضه‌های واقعی مشتری را انتخاب کنید (چندتایی):</p>
+          <div id="correction-options"></div>
+          <label>یادداشت (اختیاری):
+            <input type="text" id="fb-note" placeholder="توضیح تکمیلی...">
+          </label>
+          <button id="fb-save-correction">💾 ذخیره اصلاح</button>
+        </div>
+      </div>
+
       <div class="buttons" style="margin-top:16px;">
         <button id="send-whatsapp" class="whatsapp">📱 ارسال به واتساپ</button>
-        <button id="save-record">💾 ذخیره در سابقه مشتری</button>
+        <button id="save-record">💾 ذخیره در سابقه</button>
         <button id="restart" class="secondary">شروع دوباره</button>
       </div>
     </section>
@@ -89,7 +115,7 @@
   <div id="tab-packs" class="hidden">
     <section class="card">
       <h2>پک‌های پیشنهادی</h2>
-      <p class="hint">پک‌ها بر اساس آخرین اسکن مشتری نمایش داده می‌شوند.</p>
+      <p class="hint">بر اساس آخرین اسکن مشتری.</p>
       <div id="packs-detail"></div>
     </section>
   </div>
@@ -99,8 +125,20 @@
     <section class="card">
       <h2>سابقه مشتریان</h2>
       <div id="history-list"></div>
-      <button id="export-excel" style="margin-top:12px;">📊 خروجی Excel</button>
-      <button id="clear-history" class="secondary" style="margin-top:8px;">🗑 پاک کردن همه سابقه</button>
+      <button id="export-excel" class="excel" style="margin-top:12px;">📊 خروجی Excel</button>
+      <button id="clear-history" class="secondary" style="margin-top:8px;">🗑 پاک کردن همه</button>
+    </section>
+  </div>
+
+  <!-- تب دیتاست -->
+  <div id="tab-dataset" class="hidden">
+    <section class="card">
+      <h2>دیتاست آموزشی</h2>
+      <p class="hint">نمونه‌های تأییدشده و اصلاح‌شده توسط مشاورها. برای ارسال به تیم فنی، خروجی ZIP بگیرید.</p>
+      <div id="dataset-stats" class="dataset-stats"></div>
+      <button id="export-dataset" class="excel">📦 خروجی ZIP از دیتاست</button>
+      <button id="clear-dataset" class="secondary" style="margin-top:8px;">🗑 پاک کردن دیتاست</button>
+      <div id="dataset-list" style="margin-top:16px;"></div>
     </section>
   </div>
 </main>
@@ -109,6 +147,7 @@
   <p>طراح: <strong>محمد سیستانی</strong></p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
